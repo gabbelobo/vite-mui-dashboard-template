@@ -1,3 +1,5 @@
+import { useLayoutContext } from "@/contexts/LayoutContext";
+import useIsMobile from "@/hooks/useIsMobile";
 import {
     ListItem,
     ListItemButton,
@@ -12,9 +14,15 @@ interface Props {
 }
 
 const SidebarLink = ({ text, icon, to }: Props) => {
+    const isMobile = useIsMobile();
+    const { sidebarOpen, setSidebarOpen } = useLayoutContext();
+    function handleCloseSidebar() {
+        if(!isMobile || !sidebarOpen) return;
+        setSidebarOpen(false)
+    }
     return (
         <ListItem key={text} disablePadding>
-            <ListItemButton href={to}>
+            <ListItemButton href={to} onClick={handleCloseSidebar}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={text} />
             </ListItemButton>
